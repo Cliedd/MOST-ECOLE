@@ -37,14 +37,17 @@ public class MedicalExamController {
 
         if (subject != null && year != null) {
             return ResponseEntity.ok(
-                medicalExamRepository.findBySubjectAndYearOrderByTopicAsc(subject, year)
+                medicalExamRepository.findBySubject(subject).stream()
+                    .filter(r -> year.equals(r.getYear()))
+                    .sorted(java.util.Comparator.comparing(com.mostecole.entity.MedicalExamPrep::getTopic))
+                    .toList()
             );
         }
         if (subject != null) {
-            return ResponseEntity.ok(medicalExamRepository.findBySubject(subject));
+            return ResponseEntity.ok(medicalExamRepository.findBySubjectOrderByYearDesc(subject));
         }
         if (Boolean.TRUE.equals(officialOnly)) {
-            return ResponseEntity.ok(medicalExamRepository.findByIsOfficialTrueOrderByYearDesc());
+            return ResponseEntity.ok(medicalExamRepository.findByIsOfficialTrue());
         }
         return ResponseEntity.ok(medicalExamRepository.findAll(pageable).getContent());
     }

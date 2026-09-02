@@ -59,11 +59,12 @@ public class AdminController {
     @Operation(summary = "Enable or disable a user account")
     public ResponseEntity<Map<String, Object>> toggleUserEnabled(@PathVariable UUID id) {
         return userRepository.findById(id).map((User user) -> {
-            user.setEnabled(!user.isEnabled());
+            boolean nowEnabled = !Boolean.TRUE.equals(user.getEnabled());
+            user.setEnabled(nowEnabled);
             userRepository.save(user);
             Map<String, Object> result = new HashMap<>();
             result.put("id", id);
-            result.put("enabled", user.isEnabled());
+            result.put("enabled", nowEnabled);
             return ResponseEntity.ok(result);
         }).orElse(ResponseEntity.notFound().build());
     }
