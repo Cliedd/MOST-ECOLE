@@ -44,7 +44,7 @@ jobs:
 
       - name: Run tests
         working-directory: backend
-        run: ./mvnw test -pl . -Dspring.profiles.active=test
+        run: mvn test -pl . -Dspring.profiles.active=test
         env:
           SPRING_DATASOURCE_URL:      jdbc:postgresql://localhost:5432/mostecole_test
           SPRING_DATASOURCE_USERNAME: mostecole
@@ -53,7 +53,7 @@ jobs:
 
       - name: Build JAR
         working-directory: backend
-        run: ./mvnw package -DskipTests -q
+        run: mvn package -DskipTests -q
 
       - name: Upload test results
         if: always()
