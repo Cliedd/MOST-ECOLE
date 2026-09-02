@@ -1,7 +1,7 @@
 package com.mostecole.controller;
 
 import com.mostecole.entity.User;
-import com.mostecole.entity.enums.Role;
+import com.mostecole.entity.Role;
 import com.mostecole.repository.CourseRepository;
 import com.mostecole.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;

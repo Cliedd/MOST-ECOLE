@@ -56,7 +56,7 @@ public class AppointmentController {
             @RequestParam String status) {
         return appointmentRepository.findById(id).map((Appointment appt) -> {
             try {
-                appt.setStatus(com.mostecole.entity.enums.AppointmentStatus.valueOf(status.toUpperCase()));
+                appt.setStatus(com.mostecole.entity.AppointmentStatus.valueOf(status.toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // keep current status
             }

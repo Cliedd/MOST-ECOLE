@@ -1,7 +1,7 @@
 package com.mostecole.controller;
 
 import com.mostecole.entity.MedicalExamPrep;
-import com.mostecole.entity.enums.MedicalSubject;
+import com.mostecole.entity.MedicalSubject;
 import com.mostecole.repository.MedicalExamPrepRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
