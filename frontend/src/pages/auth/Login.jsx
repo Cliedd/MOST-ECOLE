@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Link as RouterLink, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -7,14 +7,20 @@ import {
   Alert, Link, Divider, Stack, InputAdornment, IconButton,
 } from '@mui/material';
 import { School, Visibility, VisibilityOff } from '@mui/icons-material';
-import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { loginSchema } from '../../utils/validators';
+
+const BACKEND_URL = import.meta.env.VITE_API_URL?.startsWith('http')
+  ? import.meta.env.VITE_API_URL
+  : window.location.origin.replace(':3000', ':8080');
 
 export default function Login() {
   const { login, isAuthenticated, loading, error, clearError, user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [showPwd, setShowPwd] = useState(false);
+
+  const oauthError = searchParams.get('error');
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginSchema),
@@ -22,7 +28,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      if (user.role === 'ROLE_ADMIN')   navigate('/admin');
+      if (user.role === 'ROLE_ADMIN')        navigate('/admin');
       else if (user.role === 'ROLE_TEACHER') navigate('/teacher');
       else navigate('/student');
     }
@@ -31,6 +37,11 @@ export default function Login() {
   const onSubmit = async (data) => {
     clearError();
     await login(data);
+  };
+
+  const handleGoogleLogin = () => {
+    // Redirect to Spring's OAuth2 authorization endpoint
+    window.location.href = `${BACKEND_URL}/oauth2/authorization/google`;
   };
 
   return (
@@ -45,9 +56,35 @@ export default function Login() {
             <Typography variant="body2" color="text.secondary">Connectez-vous à votre espace</Typography>
           </Stack>
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }} onClose={clearError}>{error}</Alert>
+          {(error || oauthError) && (
+            <Alert severity="error" sx={{ mb: 2 }} onClose={clearError}>
+              {oauthError ? decodeURIComponent(oauthError) : error}
+            </Alert>
           )}
+
+          {/* Google OAuth Button */}
+          <Button
+            variant="outlined"
+            fullWidth
+            size="large"
+            onClick={handleGoogleLogin}
+            sx={{
+              mb: 2, py: 1.4, fontWeight: 600, borderColor: '#dadce0',
+              color: 'text.primary', gap: 1.5,
+              '&:hover': { bgcolor: '#f8f9fa', borderColor: '#c6c6c6' },
+            }}
+            startIcon={
+              <Box component="img"
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google" sx={{ width: 20, height: 20 }} />
+            }
+          >
+            Continuer avec Google
+          </Button>
+
+          <Divider sx={{ mb: 2 }}>
+            <Typography variant="caption" color="text.secondary">OU</Typography>
+          </Divider>
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Stack spacing={2.5}>
@@ -91,9 +128,7 @@ export default function Login() {
             </Stack>
           </form>
 
-          <Divider sx={{ my: 3 }}>
-            <Typography variant="caption" color="text.secondary">OU</Typography>
-          </Divider>
+          <Divider sx={{ my: 3 }} />
 
           <Typography variant="body2" textAlign="center">
             Pas encore de compte ?{' '}

@@ -2,6 +2,9 @@ package com.mostecole.config;
 
 import com.mostecole.security.CustomUserDetailsService;
 import com.mostecole.security.JwtAuthenticationFilter;
+import com.mostecole.security.oauth2.CustomOAuth2UserService;
+import com.mostecole.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.mostecole.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,8 +34,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final CustomUserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter           jwtAuthenticationFilter;
+    private final CustomUserDetailsService          userDetailsService;
+    private final CustomOAuth2UserService           oAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler successHandler;
+    private final OAuth2AuthenticationFailureHandler failureHandler;
 
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;
@@ -42,11 +48,13 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            // OAuth2 requires a session for the state parameter — keep STATELESS only for API
             .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/levels/**", "/api/subjects/**").permitAll()
@@ -55,7 +63,12 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
+            );
 
         return http.build();
     }

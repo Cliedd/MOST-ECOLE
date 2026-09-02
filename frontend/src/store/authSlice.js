@@ -54,6 +54,15 @@ const authSlice = createSlice({
       localStorage.removeItem('user');
     },
     clearError(state) { state.error = null; },
+    // Used by OAuth2Callback after Google redirect
+    setCredentials(state, action) {
+      const { token, user } = action.payload;
+      state.token           = token;
+      state.user            = user;
+      state.isAuthenticated = true;
+      state.loading         = false;
+      state.error           = null;
+    },
   },
   extraReducers: (builder) => {
     const handlePending  = (state) => { state.loading = true; state.error = null; };
@@ -78,7 +87,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { logout, clearError, setCredentials } = authSlice.actions;
 export default authSlice.reducer;
 
 // Selectors

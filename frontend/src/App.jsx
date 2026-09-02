@@ -2,10 +2,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from './components/layout/PrivateRoute';
 
 // Pages publiques
-import Home        from './pages/public/Home';
-import Login       from './pages/auth/Login';
-import Register    from './pages/auth/Register';
-import NotFound    from './pages/public/NotFound';
+import Home           from './pages/public/Home';
+import Login          from './pages/auth/Login';
+import Register       from './pages/auth/Register';
+import OAuth2Callback from './pages/auth/OAuth2Callback';
+import NotFound       from './pages/public/NotFound';
 
 // Pages étudiant
 import StudentDashboard   from './pages/student/Dashboard';
@@ -29,9 +30,10 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* Public */}
-        <Route path="/"         element={<Home />} />
-        <Route path="/login"    element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/"                element={<Home />} />
+        <Route path="/login"           element={<Login />} />
+        <Route path="/register"        element={<Register />} />
+        <Route path="/oauth2/callback" element={<OAuth2Callback />} />
 
         {/* Espace élève */}
         <Route path="/student" element={<PrivateRoute roles={['ROLE_STUDENT']} />}>
