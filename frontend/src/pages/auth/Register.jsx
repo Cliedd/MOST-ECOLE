@@ -3,17 +3,25 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box, Card, CardContent, Typography, TextField, Button, Alert,
-  Link, Stack, InputAdornment, IconButton, ToggleButton, ToggleButtonGroup,
+  Link, Stack, InputAdornment, IconButton, ToggleButton, ToggleButtonGroup, Divider,
 } from '@mui/material';
 import { School, Visibility, VisibilityOff, Person, MenuBook } from '@mui/icons-material';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { registerSchema } from '../../utils/validators';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL?.startsWith('http')
+  ? import.meta.env.VITE_API_URL
+  : window.location.origin.replace(':3000', ':8080');
+
 export default function Register() {
   const { register: registerUser, loading, error, clearError } = useAuth();
   const navigate  = useNavigate();
   const [showPwd, setShowPwd] = useState(false);
+
+  const handleGoogleRegister = () => {
+    window.location.href = `${BACKEND_URL}/oauth2/authorization/google`;
+  };
 
   const { register, handleSubmit, control, formState: { errors } } = useForm({
     resolver: yupResolver(registerSchema),
@@ -38,6 +46,30 @@ export default function Register() {
           </Stack>
 
           {error && <Alert severity="error" sx={{ mb: 2 }} onClose={clearError}>{error}</Alert>}
+
+          {/* Google OAuth Button */}
+          <Button
+            variant="outlined"
+            fullWidth
+            size="large"
+            onClick={handleGoogleRegister}
+            sx={{
+              mb: 2, py: 1.4, fontWeight: 600, borderColor: '#dadce0',
+              color: 'text.primary', gap: 1.5,
+              '&:hover': { bgcolor: '#f8f9fa', borderColor: '#c6c6c6' },
+            }}
+            startIcon={
+              <Box component="img"
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google" sx={{ width: 20, height: 20 }} />
+            }
+          >
+            Continuer avec Google
+          </Button>
+
+          <Divider sx={{ mb: 2 }}>
+            <Typography variant="caption" color="text.secondary">OU</Typography>
+          </Divider>
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Stack spacing={2.5}>

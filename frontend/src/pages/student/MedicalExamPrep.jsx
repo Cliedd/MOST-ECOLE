@@ -20,7 +20,7 @@ const SUBJECTS = [
 
 function Countdown() {
   // Exam fin août – date fixe pour l'affichage
-  const examDate = new Date('2025-08-28T08:00:00');
+  const examDate = new Date('2026-08-27T08:00:00');
   const now      = new Date();
   const diff     = examDate - now;
   const days     = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
@@ -30,7 +30,7 @@ function Countdown() {
         <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" justifyContent="space-between" gap={2}>
           <Box>
             <Typography variant="h6" fontWeight={700}>⏳ Compte à rebours – Concours médecine FWB</Typography>
-            <Typography sx={{ opacity: 0.9 }}>28 août 2025 · Université de Liège</Typography>
+            <Typography sx={{ opacity: 0.9 }}>27 août 2026 · Université de Liège</Typography>
           </Box>
           <Box textAlign="center">
             <Typography variant="h2" fontWeight={800}>{days}</Typography>
@@ -47,7 +47,7 @@ function Countdown() {
 }
 
 export default function MedicalExamPrep() {
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
   const [selected, setSelected] = useState(null);
 
   return (
@@ -103,7 +103,8 @@ export default function MedicalExamPrep() {
 
                 <Button fullWidth variant="contained"
                   sx={{ bgcolor: subj.color, '&:hover': { filter: 'brightness(0.9)' } }}
-                  startIcon={<Timer />}>
+                  startIcon={<Timer />}
+                  onClick={() => navigate(`/student/courses?subject=${subj.key}`)}>
                   Commencer les révisions
                 </Button>
               </CardContent>

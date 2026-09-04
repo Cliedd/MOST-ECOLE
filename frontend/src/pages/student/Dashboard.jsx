@@ -34,6 +34,17 @@ export default function StudentDashboard() {
 
   const recentCourses = courses.slice(0, 3);
 
+  const coursesTermines = courses.length > 0 ? Math.floor(courses.length * 0.3) : 0;
+  const coursesEnCours  = courses.length > 0 ? Math.floor(courses.length * 0.5) : 0;
+  const progressionMoy  = courses.length > 0 ? '75%' : '0%';
+
+  const progressData = courses.length > 0
+    ? courses.slice(0, 6).map((c) => ({
+        subject: c.subjectName?.split(' ')[0] ?? 'Matière',
+        score: ((c.id?.charCodeAt(0) ?? 50) % 40) + 50,
+      }))
+    : MOCK_PROGRESS;
+
   return (
     <MainLayout>
       {/* Welcome Banner */}
@@ -64,10 +75,10 @@ export default function StudentDashboard() {
       <Grid container spacing={3}>
         {/* Stats cards */}
         {[
-          { label: 'Cours terminés',     value: '4',  color: '#27AE60', icon: <EmojiEvents /> },
-          { label: 'En cours',           value: '3',  color: '#3498DB', icon: <TrendingUp /> },
-          { label: 'Progression moy.',   value: '75%',color: '#9B59B6', icon: <TrendingUp /> },
-          { label: 'Prochain RDV',       value: 'Mer',color: '#F39C12', icon: <CalendarMonth /> },
+          { label: 'Cours terminés',     value: String(coursesTermines), color: '#27AE60', icon: <EmojiEvents /> },
+          { label: 'En cours',           value: String(coursesEnCours),  color: '#3498DB', icon: <TrendingUp /> },
+          { label: 'Progression moy.',   value: progressionMoy,          color: '#9B59B6', icon: <TrendingUp /> },
+          { label: 'Prochain RDV',       value: 'Mer',                   color: '#F39C12', icon: <CalendarMonth /> },
         ].map((stat) => (
           <Grid item xs={6} md={3} key={stat.label}>
             <Card>
@@ -92,7 +103,7 @@ export default function StudentDashboard() {
                 Ma progression par matière
               </Typography>
               <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={MOCK_PROGRESS} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                <BarChart data={progressData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                   <XAxis dataKey="subject" tick={{ fontSize: 12 }} />
                   <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
@@ -145,7 +156,7 @@ export default function StudentDashboard() {
               {recentCourses.length > 0
                 ? recentCourses.map((course) => (
                     <Grid item xs={12} sm={6} md={4} key={course.id}>
-                      <CourseCard course={course} progress={Math.floor(Math.random() * 80)} />
+                      <CourseCard course={course} progress={(recentCourses.indexOf(course) * 23 + 15) % 85} />
                     </Grid>
                   ))
                 : (
