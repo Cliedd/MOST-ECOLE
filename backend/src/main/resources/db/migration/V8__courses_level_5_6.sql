@@ -858,7 +858,7 @@ Décomposer en éléments simples avant d''intégrer.
 - Aire entre deux courbes
 - Valeur moyenne : f̄ = [1/(b-a)] × ∫[a→b] f(x)dx
 - Calcul de probabilités (distributions continues)',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -924,7 +924,7 @@ Compare les fréquences observées aux fréquences théoriques.
 χ² = Σ (Oᵢ - Eᵢ)² / Eᵢ
 
 Si χ² > valeur critique → la distribution observée s''écarte significativement de la distribution théorique.',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -987,7 +987,7 @@ d = |ax₀ + by₀ + cz₀ - d| / √(a²+b²+c²)
 d = |AP⃗ × d⃗| / |d⃗| (d⃗ = vecteur directeur, A = point de la droite)
 
 **Application :** Trouver le point d''un plan le plus proche d''un point donné → projection orthogonale.',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -1057,7 +1057,7 @@ Les compétences développées en mathématiques vont bien au-delà du calcul :
 - Rigueur et précision
 
 Ces compétences sont valorisées dans toutes les filières universitaires et professionnelles.',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 4h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -1126,7 +1126,7 @@ Transforme des problèmes de dérivation en problèmes algébriques.
 - L{sin(ωt)} = ω/(s²+ω²)
 
 **Applications :** résolution d''équations différentielles en ingénierie, traitement du signal.',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -1191,7 +1191,7 @@ Un **espace métrique** (E, d) est un ensemble E muni d''une distance d(x,y) :
 3. d(x,z) ≤ d(x,y) + d(y,z) (inégalité triangulaire)
 
 Ces concepts généralisent ℝ à des espaces abstraits (fonctions, suites...).',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -1254,7 +1254,7 @@ Un **graphe** G = (V, E) est composé de :
 
 ### Algorithme de Dijkstra
 Trouve le plus court chemin d''un sommet source à tous les autres sommets d''un graphe pondéré (poids positifs).',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
@@ -1324,7 +1324,7 @@ En FWB, l''accès aux études de médecine et dentisterie passe par le **concour
 - MOOC en ligne (Coursera, edX) sur les mathématiques de base universitaires
 - Livres de préparation au concours médecine
 - Semaines de remise à niveau proposées par les universités (avant la rentrée de septembre)',
-  (SELECT id FROM subjects WHERE name = 'Mathématiques 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
+  (SELECT id FROM subjects WHERE name = 'Mathématiques générales 6h' AND level_id = (SELECT id FROM levels WHERE level_number = 6)),
   (SELECT id FROM levels WHERE level_number = 6),
   true
 );
