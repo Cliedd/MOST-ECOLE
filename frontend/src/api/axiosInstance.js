@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_API_URL || 'https://backend-production-381d.up.railway.app',
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 });
